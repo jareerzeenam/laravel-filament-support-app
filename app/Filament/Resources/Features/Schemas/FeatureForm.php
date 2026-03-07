@@ -2,7 +2,10 @@
 
 namespace App\Filament\Resources\Features\Schemas;
 
+use App\Enums\Feature\FeatureStatus;
+use App\Enums\Feature\FeatureType;
 use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Components\TextInput;
 use Filament\Forms\Components\Textarea;
 use Filament\Forms\Components\TimePicker;
@@ -16,10 +19,16 @@ class FeatureForm
             ->components([
                 TextInput::make('name')
                     ->required(),
-                TextInput::make('status')
+                Select::make('status')
+                    ->options(FeatureStatus::class)
+                    ->enum(FeatureStatus::class)
+                    ->searchable()
                     ->required()
                     ->default('Proposed'),
-                TextInput::make('type')
+                Select::make('type')
+                    ->options(FeatureType::class)
+                    ->enum(FeatureType::class)
+                    ->searchable()
                     ->required()
                     ->default('Feature'),
                 Textarea::make('description')
@@ -37,7 +46,7 @@ class FeatureForm
                     ->required()
                     ->numeric()
                     ->default(0.0)
-                    ->prefix('$'),
+                    ->prefix('£'),
                 DatePicker::make('target_delivery_date'),
                 TimePicker::make('delivered_at'),
             ]);
