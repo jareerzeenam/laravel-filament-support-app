@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Enums\Feature\FeatureStatus;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -18,8 +19,8 @@ class FeatureFactory extends Factory
     {
         return [
             'name' => $this->faker->sentence(),
-            'status' => $this->faker->randomElement(['Proposed', 'Planning', 'In Progress', 'Completed']),
-            'type' => $this->faker->randomElement(['Feature', 'Bugfix', 'Integration']),
+            'status' => $this->faker->randomElement(FeatureStatus::class),
+            'type' => $this->faker->randomElement(\App\Enums\Feature\FeatureType::class),
             'description' => $this->faker->paragraph(),
             'effort_in_days' => $this->faker->numberBetween(1, 300),
             'priority' => $this->faker->numberBetween(1, 10),
