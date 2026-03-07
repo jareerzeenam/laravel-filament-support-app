@@ -1,0 +1,11 @@
+{
+    "mcpServers": {
+        "laravel-boost": {
+            "command": "/Users/jareer/Library/Application Support/Herd/bin/php85",
+            "args": [
+                "/Users/jareer/Documents/Jareer/Laravel/Filament/laravel-filament5/artisan",
+                "boost:mcp"
+            ]
+        }
+    }
+}
