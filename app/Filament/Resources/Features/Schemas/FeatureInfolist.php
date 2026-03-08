@@ -21,7 +21,7 @@ class FeatureInfolist
                 TextEntry::make('priority')
                     ->numeric(),
                 TextEntry::make('cost')
-                    ->money(),
+                    ->money('GBP'),
                 TextEntry::make('target_delivery_date')
                     ->date()
                     ->placeholder('-'),
