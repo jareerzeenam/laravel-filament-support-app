@@ -12,9 +12,11 @@ class VoteForm
         return $schema
             ->components([
                 Select::make('user_id')
+                    ->label('User')
                     ->relationship('user', 'name')
                     ->required(),
                 Select::make('feature_id')
+                    ->label('Feature')
                     ->relationship('feature', 'name')
                     ->required(),
             ]);
