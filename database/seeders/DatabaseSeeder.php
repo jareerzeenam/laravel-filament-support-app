@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\Feature;
+use App\Models\Milestone;
 use App\Models\User;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
@@ -23,5 +24,10 @@ class DatabaseSeeder extends Seeder
         ]);
 
         Feature::factory(10)->create();
+        Milestone::factory(20)->create([
+            'feature_id' => function () {
+                return Feature::inRandomOrder()->first()->id;
+            },
+        ]);
     }
 }

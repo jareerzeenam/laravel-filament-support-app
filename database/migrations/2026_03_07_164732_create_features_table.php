@@ -17,6 +17,7 @@ return new class extends Migration
             $table->enum('status', \App\Enums\Feature\FeatureStatus::cases());
             $table->enum('type', \App\Enums\Feature\FeatureType::cases());
             $table->text('description');
+//            $table->json('milestones')->nullable();
             $table->smallInteger('effort_in_days')->unsigned()->default(0);
             $table->smallInteger('priority')->unsigned()->default(0);
             $table->decimal('cost', 10, 2)->default(0.00);

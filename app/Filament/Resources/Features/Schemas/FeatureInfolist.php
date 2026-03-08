@@ -2,7 +2,10 @@
 
 namespace App\Filament\Resources\Features\Schemas;
 
+use Filament\Infolists\Components\IconEntry;
+use Filament\Infolists\Components\RepeatableEntry;
 use Filament\Infolists\Components\TextEntry;
+use Filament\Schemas\Components\Section;
 use Filament\Schemas\Schema;
 
 class FeatureInfolist
@@ -11,29 +14,73 @@ class FeatureInfolist
     {
         return $schema
             ->components([
-                TextEntry::make('name'),
-                TextEntry::make('status'),
-                TextEntry::make('type'),
-                TextEntry::make('description')
-                    ->columnSpanFull(),
-                TextEntry::make('effort_in_days')
-                    ->numeric(),
-                TextEntry::make('priority')
-                    ->numeric(),
-                TextEntry::make('cost')
-                    ->money('GBP'),
-                TextEntry::make('target_delivery_date')
-                    ->date()
-                    ->placeholder('-'),
-                TextEntry::make('delivered_at')
-                    ->time()
-                    ->placeholder('-'),
-                TextEntry::make('created_at')
-                    ->dateTime()
-                    ->placeholder('-'),
-                TextEntry::make('updated_at')
-                    ->dateTime()
-                    ->placeholder('-'),
+
+                Section::make('Feature Information')
+                    ->columns(4)
+                    ->columnSpanFull()
+                    ->schema(
+                        self::getFeatureInformationSchema()
+                    ),
+
+                Section::make('Description')
+                    ->columns(1)
+                    ->columnSpanFull()
+                    ->schema([
+                        TextEntry::make('description')
+                            ->hiddenLabel()
+                            ->html()
+                            ->prose()
+                            ->columnSpanFull(),
+                    ]),
+
+                Section::make('Milestones')
+                    ->description('Key milestones for this feature')
+                    ->columns(1)
+                    ->columnSpanFull()
+                    ->schema([
+                        RepeatableEntry::make('milestones')
+                            ->hiddenLabel()
+                            ->table(
+                                [
+                                    RepeatableEntry\TableColumn::make('Title'),
+                                    RepeatableEntry\TableColumn::make('Due Date'),
+                                    RepeatableEntry\TableColumn::make('Completed'),
+                                ]
+                            )
+                            ->schema([
+                                TextEntry::make('title'),
+                                TextEntry::make('due_date')
+                                    ->date(),
+                                IconEntry::make('is_completed')
+                                    ->boolean()
+                                    ->label('Completed'),
+                            ])
+                            ->placeholder('No milestones defined.')
+                            ->columnSpanFull(),
+                    ]),
             ]);
+    }
+
+    private static function getFeatureInformationSchema(): array
+    {
+
+        return [
+            TextEntry::make('name'),
+            TextEntry::make('status')->badge(),
+            TextEntry::make('type')->badge(),
+            TextEntry::make('effort_in_days')
+                ->numeric(),
+            TextEntry::make('priority')
+                ->numeric(),
+            TextEntry::make('cost')
+                ->money('GBP'),
+            TextEntry::make('target_delivery_date')
+                ->date()
+                ->placeholder('N/A'),
+            TextEntry::make('delivered_at')
+                ->time()
+                ->placeholder('N/A'),
+
+        ];
     }
 }

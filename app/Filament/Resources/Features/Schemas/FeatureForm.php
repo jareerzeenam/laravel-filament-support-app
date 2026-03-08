@@ -5,6 +5,7 @@ namespace App\Filament\Resources\Features\Schemas;
 use App\Enums\Feature\FeatureStatus;
 use App\Enums\Feature\FeatureType;
 use Filament\Forms\Components\DatePicker;
+use Filament\Forms\Components\Repeater;
 use Filament\Forms\Components\RichEditor;
 use Filament\Forms\Components\Select;
 use Filament\Forms\Components\Slider;
@@ -13,6 +14,7 @@ use Filament\Forms\Components\TimePicker;
 use Filament\Forms\Components\Toggle;
 use Filament\Forms\Components\ToggleButtons;
 use Filament\Schemas\Components\Section;
+use Filament\Schemas\Components\Tabs;
 use Filament\Schemas\Components\Utilities\Get;
 use Filament\Schemas\Schema;
 use Illuminate\Validation\Rule;
@@ -25,20 +27,72 @@ class FeatureForm
             ->columns(3)
             ->components([
 
-                Section::make('Feature Details')
-                    ->description('Details about the Feature')
+                Tabs::make('Feature Tabs')
                     ->columnSpanFull()
-                    ->collapsible()
-                    ->columns(3)
-                    ->schema(self::getGeneralDetailsSchema()),
+                    ->tabs([
+                        Tabs\Tab::make('General')
+                            ->columns(3)
+                            ->schema([
+                                Section::make('Feature Details')
+                                    ->description('Details about the Feature')
+                                    ->columnSpanFull()
+                                    ->collapsible()
+                                    ->columns(3)
+                                    ->schema(self::getGeneralDetailsSchema()),
+                            ]),
+                        Tabs\Tab::make('Details')
+                            ->columns(2)
+                            ->schema([
+                                Section::make('Effort & Cost')
+                                    ->description('Estimate the effort and cost for this feature')
+                                    ->columnSpanFull()
+                                    ->collapsible()
+                                    ->columns(2)
+                                    ->schema(self::getEffortAndCostSchema())]
+                            ),
+                        Tabs\Tab::make('Milestones')
+                            ->schema([
+                                Repeater::make('milestones')
+                                    ->label('Milestones')
+                                    ->relationship('milestones')
+                                    ->reorderable()
+                                    ->nullable()
+                                    ->minItems(1)
+                                    ->maxItems(3)
+                                    ->compact()
+                                    ->table([
+                                        Repeater\TableColumn::make('Title'),
+                                        Repeater\TableColumn::make('Due Date'),
+                                        Repeater\TableColumn::make('Is Completed'),
+                                    ])
+                                    ->schema([
+                                        TextInput::make('title')
+                                            ->label('Milestone Title')
+                                            ->required(),
+                                        DatePicker::make('due_date')
+                                            ->label('Due Date')
+                                            ->required(),
+                                        Toggle::make('is_completed')
+                                            ->label('Completed')
+                                            ->default(false),
+                                    ])
+                                    ->columnSpanFull(),
+                            ]),
+                    ]),
 
-                Section::make('Effort & Cost')
-                    ->description('Estimate the effort and cost for this feature')
-                    ->columnSpanFull()
-                    ->collapsible()
-                    ->columns(2)
-                    ->schema(self::getEffortAndCostSchema()),
+                //                Section::make('Feature Details')
+                //                    ->description('Details about the Feature')
+                //                    ->columnSpanFull()
+                //                    ->collapsible()
+                //                    ->columns(3)
+                //                    ->schema(self::getGeneralDetailsSchema()),
 
+                //                Section::make('Effort & Cost')
+                //                    ->description('Estimate the effort and cost for this feature')
+                //                    ->columnSpanFull()
+                //                    ->collapsible()
+                //                    ->columns(2)
+                //                    ->schema(self::getEffortAndCostSchema()),
 
             ]);
     }
@@ -86,7 +140,7 @@ class FeatureForm
                 ->minValue(1)
                 ->maxValue(10)
                 ->default(0)
-                ->columnSpan(2),
+                ->columnSpanFull(),
 
             RichEditor::make('description')
                 ->required()
@@ -121,7 +175,9 @@ class FeatureForm
                     ],
                 ])
                 ->columnSpanFull(),
+
         ];
+
     }
 
     private static function getEffortAndCostSchema(): array
