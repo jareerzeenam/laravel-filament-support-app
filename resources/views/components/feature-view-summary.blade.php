@@ -40,18 +40,16 @@
                             <span
                                 class="inline-flex items-center gap-1.5 px-3 py-1 text-xs font-medium rounded-full bg-amber-100 text-amber-700 dark:bg-amber-500/10 dark:text-amber-400 mb-3">
                                 <span class="w-1.5 h-1.5 rounded-full bg-amber-500"></span>
-                                Planned
+                                {{ $feature->status }}
                             </span>
                     <h1 class="text-2xl font-semibold tracking-tight text-zinc-900 dark:text-white sm:text-3xl">
-                        Real-time Collaboration
+                        {{ $feature->name }}
                     </h1>
                 </div>
             </div>
 
             <p class="mt-4 leading-relaxed text-zinc-600 dark:text-zinc-400">
-                Enable multiple team members to work on projects simultaneously with live cursors, instant
-                updates, and seamless conflict resolution. This feature will transform how teams collaborate by
-                providing a Google Docs-like experience for all project types.
+                {{ $feature->description }}
             </p>
 
             <div class="flex flex-wrap items-center gap-4 mt-6">

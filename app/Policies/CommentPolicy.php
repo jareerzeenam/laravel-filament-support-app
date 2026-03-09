@@ -68,4 +68,9 @@ class CommentPolicy
     {
         return $user->is_admin;
     }
+
+    public function approve(User $user, Comment $comment): bool
+    {
+        return $user->is_admin;
+    }
 }
